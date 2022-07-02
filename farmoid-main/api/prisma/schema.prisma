@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PlantInfo {
+  id         Int    @unique @default(autoincrement())
+  name       String
+  query_name String
+  min        Int
+  max        Int
+}
+
+model User {
+  uid    String  @unique
+  // Garden Garden[]
+  plants Plant[]
+}
+
+// model Garden {
+//   id      String  @unique @default(uuid())
+//   Plant   Plant[]
+//   User    User?   @relation(fields: [ownerId], references: [uid])
+//   ownerId String
+//   name    String  @unique
+// }
+
+model Plant {
+  id       String @unique @default(uuid())
+  moisture Int
+  name     String
+  type     String
+  // Garden   Garden? @relation(fields: [gardenId], references: [id])
+  // gardenId String
+  User     User?  @relation(fields: [ownerId], references: [uid])
+  ownerId  String
+}
